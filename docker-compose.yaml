@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  letta:
+    image: letta/letta:latest
+    ports:
+      - "8283:8283" # Letta API server
+    volumes:
+      - ~/.letta/.persist/pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env.letta
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # Required for DNS resolution
+    restart: unless-stopped
