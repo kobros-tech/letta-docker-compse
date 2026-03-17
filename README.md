@@ -20,7 +20,7 @@ psql -U $POSTGRES_USER letta -c "CREATE EXTENSION vector"
 
 ## setting up the pip
 
-if letta-client is installed in you environment, delete it
+if letta-client is installed in your environment, delete it
 
 ```python
 pip uninstall letta-client -y
