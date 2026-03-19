@@ -1,14 +1,31 @@
 version: "3.9"
 
 services:
+  letta_db:
+    image: pgvector/pgvector:pg15
+    environment:
+      POSTGRES_USER: letta
+      POSTGRES_PASSWORD: letta
+      POSTGRES_DB: letta
+    volumes:
+      - ~/.letta/.persist/pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./.ollama:/root/.ollama
+    restart: unless-stopped
+
   letta:
     image: letta/letta:latest
     ports:
-      - "8283:8283" # Letta API server
-    volumes:
-      - ~/.letta/.persist/pgdata:/var/lib/postgresql/data
+      - "8283:8283"
     env_file:
       - .env.letta
-    extra_hosts:
-      - "host.docker.internal:host-gateway" # Required for DNS resolution
+    depends_on:
+      - letta_db
+      - ollama
     restart: unless-stopped
