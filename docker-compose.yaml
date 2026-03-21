@@ -12,14 +12,6 @@ services:
       - ./db-init:/docker-entrypoint-initdb.d
     restart: unless-stopped
 
-  ollama:
-    image: ollama/ollama:latest
-    ports:
-      - "11434:11434"
-    volumes:
-      - ./.ollama:/root/.ollama
-    restart: unless-stopped
-
   letta:
     image: letta/letta:latest
     ports:
@@ -28,5 +20,6 @@ services:
       - .env.letta
     depends_on:
       - letta_db
-      - ollama
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     restart: unless-stopped
